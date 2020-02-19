@@ -1,0 +1,23 @@
+{
+  "name": "github-profile",
+  "version": "1.0.0",
+  "description": "Packages for GitHub profile app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ealfvin-dev/Github-Profile.git"
+  },
+  "author": "Erik Alfvin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ealfvin-dev/Github-Profile/issues"
+  },
+  "homepage": "https://github.com/ealfvin-dev/Github-Profile#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "inquirer": "^7.0.4"
+  }
+}
