@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const axios = require("axios");
+const fs = require("fs");
 
 inquirer.prompt(
     [{
@@ -19,6 +20,8 @@ inquirer.prompt(
 
         axios.get("https://api.github.com/users/" + input.username, config).then(function(response) {
             console.log(response);
+            const color = input.color;
+
             const username = input.username;
             const image = response.data.avatar_url;
 
@@ -35,14 +38,72 @@ inquirer.prompt(
 
             const reposURL = response.data.repos_url;
 
-            const numStars = 0;
+            let numStars = 0;
 
             axios.get(reposURL, config).then(function(repos) {
                 for(let repo of repos.data) {
                     numStars += repo.stargazers_count;
                 }
             });
-            
 
+            let htmlContent = `<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Profile</title>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+                
+                <style>
+                    body {
+                        background-color: ${color};
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="jumbotron">
+                    <h1 class="display-4">${username}</h1>
+                    <p class="lead">blog: ${blog}</p>
+                    <hr class="my-4">
+                    <p id="bio">${bio}</p>
+                </div>
+            
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="image">
+                                <img src="${image}" width="90%" alt="Profile image"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div id="content">
+                                <p>
+                                  GitHub: ${gitHub}
+                                </p>
+                                <p>
+                                  Number of repositories: ${numRepos}
+                                </p>
+                                <p>
+                                  Number of stars: ${numStars}
+                                </p>
+                                <p>
+                                  Number of followers: ${numFollowers}
+                                </p>
+                                <p>
+                                  Number following: ${numFollowing}
+                                </p>
+                                <p>
+                                  Location: ${location}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>`;
+
+            fs.writeFile(username + ".html", htmlContent, function(error){});
         });
     });
