@@ -1,6 +1,8 @@
 const inquirer = require("inquirer");
 const axios = require("axios");
+
 const fs = require("fs");
+const pdf = require("html-pdf");
 
 inquirer.prompt(
     [{
@@ -26,7 +28,7 @@ inquirer.prompt(
             const image = response.data.avatar_url;
 
             const location = response.data.location;
-            const gitHub = response.html_url;
+            const gitHub = response.data.html_url;
 
             const blog = response.data.blog;
             const bio = response.data.bio;
@@ -46,7 +48,8 @@ inquirer.prompt(
                 }
             });
 
-            let htmlContent = `<!DOCTYPE html>
+            let htmlContent = `
+            <!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
@@ -104,6 +107,14 @@ inquirer.prompt(
             </body>
             </html>`;
 
-            fs.writeFile(username + ".html", htmlContent, function(error){});
+            //Convert to pdf
+            const options = { "orientation": "portrait" };
+
+            pdf.create(htmlContent, options).toFile("./" + username + ".pdf", function(err, res) {
+                if(err){
+                    console.log(err);
+                    return
+                }
+            });
         });
     });
