@@ -1,7 +1,6 @@
 const inquirer = require("inquirer");
 const axios = require("axios");
 
-const fs = require("fs");
 const pdf = require("html-pdf");
 
 inquirer.prompt(
@@ -48,8 +47,7 @@ inquirer.prompt(
                 }
             });
 
-            let htmlContent = `
-            <!DOCTYPE html>
+            let htmlContent = `<!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
@@ -63,49 +61,50 @@ inquirer.prompt(
                     body {
                         background-color: ${color};
                     }
+
+                    p {
+                        font-size: 9pt;
+                    }
+
+                    .lead {
+                        font-size: 11pt;
+                    }
                 </style>
             </head>
             <body>
                 <div class="jumbotron">
-                    <h1 class="display-4">${username}</h1>
+                    <h4 class="display-4">${username}</h4>
                     <p class="lead">blog: ${blog}</p>
                     <hr class="my-4">
                     <p id="bio">${bio}</p>
                 </div>
-            
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="image">
-                                <img src="${image}" width="90%" alt="Profile image"/>
-                            </div>
-                        </div>
-                        <div class="col-lg-9">
-                            <div id="content">
-                                <p>
-                                  GitHub: ${gitHub}
-                                </p>
-                                <p>
-                                  Number of repositories: ${numRepos}
-                                </p>
-                                <p>
-                                  Number of stars: ${numStars}
-                                </p>
-                                <p>
-                                  Number of followers: ${numFollowers}
-                                </p>
-                                <p>
-                                  Number following: ${numFollowing}
-                                </p>
-                                <p>
-                                  Location: ${location}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+
+                <div class="image">
+                    <img src="${image}" width="20%" alt="Profile image"/>
                 </div>
-            </body>
-            </html>`;
+
+                <div id="content">
+                    <p>
+                        GitHub: ${gitHub}
+                    </p>
+                    <p>
+                        Number of repositories: ${numRepos}
+                    </p>
+                    <p>
+                        Number of stars: ${numStars}
+                    </p>
+                    <p>
+                        Number of followers: ${numFollowers}
+                    </p>
+                    <p>
+                        Number following: ${numFollowing}
+                    </p>
+                    <p>
+                        Location: ${location}
+                    </p>
+                </div>
+
+            </body>`;
 
             //Convert to pdf
             const options = { "orientation": "portrait" };
