@@ -41,6 +41,8 @@ inquirer.prompt(
 
             let numStars = 0;
 
+            locationURL = "https://www.google.com/maps/place/" + location.split(" ").join("+");
+
             axios.get(reposURL, config).then(function(repos) {
                 for(let repo of repos.data) {
                     numStars += repo.stargazers_count;
@@ -58,7 +60,10 @@ inquirer.prompt(
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
                 
                 <style>
-                    body {
+                    #content {
+                        margin-left: 5%;
+                        margin-right: 5%;
+                        padding: 2%;
                         background-color: ${color};
                     }
 
@@ -68,6 +73,12 @@ inquirer.prompt(
 
                     .lead {
                         font-size: 11pt;
+                    }
+
+                    .image {
+                        margin-left: 5%;
+                        margin-right: 5%;
+                        margin-bottom: 5%;
                     }
                 </style>
             </head>
@@ -100,7 +111,7 @@ inquirer.prompt(
                         Number following: ${numFollowing}
                     </p>
                     <p>
-                        Location: ${location}
+                        Location: <a href = ${locationURL}>${location}</a>
                     </p>
                 </div>
 
